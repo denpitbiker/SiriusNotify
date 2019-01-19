@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "876194441012",
+    "firebase_url": "https://sirius-notificator.firebaseio.com",
+    "project_id": "sirius-notificator",
+    "storage_bucket": "sirius-notificator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876194441012:android:b648c2736a2ff589",
+        "android_client_info": {
+          "package_name": "ru.notificator.sirius.siriusnotificator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876194441012-k2vm5qh5n7217chv4drcrrpa1lb4jbqu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLKZ18SiL4Z3MURjoYArA-g0KtgcigwR8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

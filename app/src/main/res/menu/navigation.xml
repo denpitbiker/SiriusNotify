@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/admin_asks"
+        android:icon="@drawable/ic_ask_black_24dp"
+        android:title="@string/title_asks" />
+
+    <item
+        android:id="@+id/admin_brings"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/title_bring" />
+
+    <item
+        android:id="@+id/admin_children"
+        android:icon="@drawable/ic_group_black_24dp"
+        android:title="@string/title_childrens" />
+
+</menu>
