@@ -1,7 +1,7 @@
 package ru.notificator.sirius.siriusnotificator;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,30 +14,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ru.notificator.sirius.siriusnotificator.Recyclik.Adapter_recuc;
 import ru.notificator.sirius.siriusnotificator.Recyclik.Boi;
 
-import static ru.notificator.sirius.siriusnotificator.MainActivity.save;
-
 public class AdminMain extends AppCompatActivity {
     private TextView mTextMessage;
-
-
-    private LinearLayout mainContent;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -61,14 +54,23 @@ public class AdminMain extends AppCompatActivity {
     };
     private Adapter_recuc mAdapter;
     private View boi_but;
+    private View sbor_create_but;
 
     public static List<Boi> boiz = new ArrayList<>();
     private SharedPreferences saver;
 
-    public void setMembersContent() {
+    private RecyclerView prok_uch;
+    public static File file;
 
+    public void setMembersContent() {
         final Activity at = this;
-        boi_but = findViewById(R.id.add_boi_button);
+        if (sbor_create_but.getVisibility() == View.VISIBLE) {
+            sbor_create_but.setVisibility(View.GONE);
+        }
+        if (boi_but.getVisibility() != View.VISIBLE) {
+            boi_but.setVisibility(View.VISIBLE);
+            prok_uch.setVisibility(View.VISIBLE);
+        }
         boi_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,25 +78,70 @@ public class AdminMain extends AppCompatActivity {
                 integrator.initiateScan();
             }
         });
-        boiz.add(new Boi("Gamaz","Neft","fdsfsdf"));
-        Boiz_saver.save_boiz(boiz,getFilesDir());
         mTextMessage.setText(R.string.title_childrens);
-        RecyclerView prok_uch = findViewById(R.id.Recycler_View_uch);
         LinearLayoutManager Uch_ll = new LinearLayoutManager(this);
         prok_uch.setLayoutManager(Uch_ll);
         prok_uch.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new Adapter_recuc(Boiz_saver.get_boiz(getFilesDir()));
+        boiz = Boiz_saver.get_boiz(file);
+        mAdapter = new Adapter_recuc(boiz);
         prok_uch.setAdapter(mAdapter);
     }
 
     public void setBringContent() {
-        mTextMessage.setText(R.string.title_bring);
-        mainContent.removeAllViews();
+        if (boi_but.getVisibility() == View.VISIBLE) {
+            boi_but.setVisibility(View.GONE);
+            prok_uch.setVisibility(View.GONE);
+        }
+        if (sbor_create_but.getVisibility() == View.GONE) {
+            sbor_create_but.setVisibility(View.VISIBLE);
+        }
+        sbor_create_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+
+            void openDialog() {
+                final Date dateAndTime = new Date();
+                final int[] curHour = new int[1];
+                final int[] curMinute = new int[1];
+                final int pois = -180;
+                final TimePickerDialog timePickerDialog = new TimePickerDialog(AdminMain.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                curHour[0] = hourOfDay;
+                                curMinute[0] = minute;
+                                if (pois != dateAndTime.getTimezoneOffset()) {
+                                    curHour[0] += (dateAndTime.getTimezoneOffset() - pois) / 60;
+                                }
+                                if (curHour[0] < 0) {
+                                    curHour[0] = 24 + curHour[0];
+                                } else {
+                                    curHour[0] %= 24;
+                                }
+                                complete(curHour[0], curMinute[0]);
+                            }
+                        }, dateAndTime.getHours(), dateAndTime.getMinutes(), true);
+                timePickerDialog.show();
+            }
+        });
     }
 
+    void complete(int hour, int minute) {
+        Toast.makeText(AdminMain.this, String.format("%d:%d", hour, minute), Toast.LENGTH_LONG).show();
+    }
+
+
     public void setAsksContent() {
-        mTextMessage.setText(R.string.title_asks);
-        mainContent.removeAllViews();
+
+        if (boi_but.getVisibility() == View.VISIBLE) {
+            boi_but.setVisibility(View.GONE);
+            prok_uch.setVisibility(View.GONE);
+        }
+        if (sbor_create_but.getVisibility() != View.GONE) {
+            sbor_create_but.setVisibility(View.GONE);
+        }
     }
 
 
@@ -102,9 +149,13 @@ public class AdminMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
-        mainContent = findViewById(R.id.admin_main_content);
         mTextMessage = findViewById(R.id.admin_title);
-
+        boi_but = findViewById(R.id.add_boi_button);
+        prok_uch = findViewById(R.id.Recycler_View_uch);
+        sbor_create_but = findViewById(R.id.add_sbor_but);
+        mTextMessage.setText(R.string.title_bring);
+        mTextMessage.setText(R.string.title_asks);
+        file = new File(getFilesDir(), "save.txt");
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -118,12 +169,12 @@ public class AdminMain extends AppCompatActivity {
                 Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
             } else {
                 setMembersContent();
-                final int ind = boiz.size();
                 final EditText ed = new EditText(this);
                 ed.setText(result.getContents());
                 String[] gi = result.getContents().split(" ");
                 Boi boi_add = new Boi(gi[0], gi[1], gi[2]);
                 boiz.add(boi_add);
+                Boiz_saver.save_boiz(boiz, file);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

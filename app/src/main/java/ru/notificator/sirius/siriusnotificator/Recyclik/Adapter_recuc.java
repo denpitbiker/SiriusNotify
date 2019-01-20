@@ -1,9 +1,7 @@
 package ru.notificator.sirius.siriusnotificator.Recyclik;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +11,11 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import ru.notificator.sirius.siriusnotificator.AdminMain;
-import ru.notificator.sirius.siriusnotificator.MainActivity;
+import ru.notificator.sirius.siriusnotificator.Boiz_saver;
 import ru.notificator.sirius.siriusnotificator.R;
 
 import static ru.notificator.sirius.siriusnotificator.AdminMain.boiz;
+import static ru.notificator.sirius.siriusnotificator.AdminMain.file;
 
 public class Adapter_recuc extends RecyclerView.Adapter<Textvievholder> implements AdaptClickList {
     private List<Boi> mlist;
@@ -64,6 +62,7 @@ public class Adapter_recuc extends RecyclerView.Adapter<Textvievholder> implemen
             ad.setPositiveButton(button1String, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int arg1) {
                     boiz.remove(position);
+                    Boiz_saver.save_boiz(boiz, file);
                     Toast.makeText(view.getContext(), "Пользователь удален",
                             Toast.LENGTH_SHORT).show();
                     notifyDataSetChanged();
