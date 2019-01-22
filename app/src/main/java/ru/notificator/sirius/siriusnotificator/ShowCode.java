@@ -1,5 +1,6 @@
 package ru.notificator.sirius.siriusnotificator;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -15,6 +16,8 @@ import com.google.zxing.qrcode.encoder.QRCode;
 import com.journeyapps.barcodescanner.*;
 
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.EnumMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -28,8 +31,8 @@ public class ShowCode extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_code);
-        SharedPreferences saver = getSharedPreferences(save,MODE_PRIVATE);
-        String text =saver.getString("surname","")+" "+saver.getString("name","")+" "+android.provider.Settings.Secure.getString(getContentResolver(),"bluetooth_address");
+        SharedPreferences saver = getSharedPreferences(save, MODE_PRIVATE);
+        String text = saver.getString("surname", "") + " " + saver.getString("name", "") + " " + getBluetoothMacAddress();
         Hashtable hints = new Hashtable();
         hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -48,4 +51,29 @@ public class ShowCode extends AppCompatActivity {
             }
         });
     }
+
+    private String getBluetoothMacAddress() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        String bluetoothMacAddress = "";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            try {
+                Field mServiceField = bluetoothAdapter.getClass().getDeclaredField("mService");
+                mServiceField.setAccessible(true);
+
+                Object btManagerService = mServiceField.get(bluetoothAdapter);
+
+                if (btManagerService != null) {
+                    bluetoothMacAddress = (String) btManagerService.getClass().getMethod("getAddress").invoke(btManagerService);
+                }
+            } catch (NoSuchFieldException e) {
+            } catch (NoSuchMethodException e) {
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e) {
+            }
+        } else {
+            bluetoothMacAddress = bluetoothAdapter.getAddress();
+        }
+        return bluetoothMacAddress;
+    }
+
 }

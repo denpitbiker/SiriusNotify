@@ -45,8 +45,9 @@ public class Registration extends AppCompatActivity {
                     editor.putBoolean("first_enter",false);
                     editor. putString("name",String.valueOf(name.getText()));
                     editor. putString("surname",String.valueOf(surname.getText()));
+                    editor.putString("token","null");
                     editor.apply();
-                    startActivity(new Intent(Registration.this, ShowCode.class));
+                    startActivity(new Intent(Registration.this, UserActivity.class));
                 }
             }
         });

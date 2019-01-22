@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mVievModel.getData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                Toast.makeText(MainActivity.this,"lol",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "lol", Toast.LENGTH_LONG).show();
             }
         });
         if (saver.getBoolean("first_enter", true)) {
@@ -52,15 +52,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else if (saver.getBoolean("tutor", false)) {
-                Intent intent = new Intent(MainActivity.this, AdminMain.class);
-                startActivity(intent);
-                finish();
-            }
-        //else{
-          //  Intent intent = new Intent(MainActivity.this, ShowCode.class);
-          //  startActivity(intent);
-          //  finish();
-      //  }
+            Intent intent = new Intent(MainActivity.this, AdminMain.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(MainActivity.this, UserActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
 }

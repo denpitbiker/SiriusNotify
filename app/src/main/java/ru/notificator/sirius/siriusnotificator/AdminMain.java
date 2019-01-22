@@ -18,13 +18,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import ru.notificator.sirius.siriusnotificator.Recyclik.Adapter_recuc;
 import ru.notificator.sirius.siriusnotificator.Recyclik.Boi;
@@ -129,7 +136,39 @@ public class AdminMain extends AppCompatActivity {
     }
 
     void complete(int hour, int minute) {
-        Toast.makeText(AdminMain.this, String.format("%d:%d", hour, minute), Toast.LENGTH_LONG).show();
+        try {
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpsURLConnection huc = (HttpsURLConnection) url.openConnection();
+            huc.setRequestMethod("POST");
+            huc.addRequestProperty("Content-type", "application/json");
+            huc.addRequestProperty("Authorization", "key=AAAAzAFCJzQ:APA91bFk4WHicdVlUkTECIbPFPOeelDeHIKvUa9MUjnstDmLi8v3_CjoGLEvhIUCfyyTliz7JHAHDIIu4ziHvmL2LsRcKM9hYYlIUXdfwqwtH59gMymhTv1TCq-Xl0yy6nj3eEqG3E_h");
+            PrintWriter out = new PrintWriter(huc.getOutputStream());
+            out.print(String.format("{\n" +
+                    "  \"registration_ids\":[%s],\n" +
+                    "  \"notification\": {\n" +
+                    "      \"title\":\"Внимание!!! сбор\",\n" +
+                    "      \"body\":\"Вы должны придти на сбор, который состоится в %d:%d\"\n" +
+                    "  }\n" +
+                    "  data: {\n" +
+                    "    hour: '%d',\n" +
+                    "    minute: '%d'\n" +
+                    "  }\n" +
+                    "}", getAllTokens(), hour, minute, hour, minute));
+            out.close();
+            Scanner in = new Scanner(huc.getInputStream());
+            Toast.makeText(AdminMain.this, in.nextLine(), Toast.LENGTH_LONG).show();
+            in.close();
+        } catch (Exception e) {
+            Toast.makeText(AdminMain.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public String getAllTokens() throws Exception {
+        String res = "";
+        for (Boi mac : boiz) {
+            res += ",\"" + new GsonBuilder().create().fromJson(ServerSN.getInfo(mac.getMac()), Info.class).token + "\"";
+        }
+        return res.substring(1);
     }
 
 

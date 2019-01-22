@@ -1,9 +1,13 @@
 package ru.notificator.sirius.siriusnotificator.services;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import ru.notificator.sirius.siriusnotificator.ServerSN;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -11,6 +15,8 @@ public class PushService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String s) {
+        SharedPreferences sp = getSharedPreferences("save",Context.MODE_PRIVATE);
+        sp.edit().putString("token",s).apply();
         Log.d(TAG, "Refreshed token: " + s);
         sendRegistrationToServer(s);
     }
