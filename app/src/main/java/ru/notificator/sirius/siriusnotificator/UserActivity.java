@@ -31,6 +31,12 @@ public class UserActivity extends AppCompatActivity {
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
 
+    @Override
+    public void onOptionsMenuClosed(Menu menu) {
+        super.onOptionsMenuClosed(menu);
+        menu.findItem()
+    }
+
     public void loadBring() {
         SharedPreferences sp = getSharedPreferences(save, Context.MODE_PRIVATE);
         DateFormat format = new SimpleDateFormat("dd:MM:yyyy kk:mm:ss", Locale.ENGLISH);
