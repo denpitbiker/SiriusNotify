@@ -39,14 +39,21 @@ public class Registration extends AppCompatActivity {
                 if (str == null) {
                     ((TextView) findViewById(R.id.error)).setText("Неверно введена фамилия или имя\n(Разрешается писать только в русской раскладке)");
                 } else {
-                    SharedPreferences saver = getSharedPreferences(save, Context.MODE_PRIVATE);
+                    final SharedPreferences saver = getSharedPreferences(save, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = saver.edit();
                     editor.putBoolean("child",true);
                     editor.putBoolean("first_enter",false);
                     editor. putString("name",String.valueOf(name.getText()));
                     editor. putString("surname",String.valueOf(surname.getText()));
-                    editor.putString("token","null");
                     editor.apply();
+                        Thread lol = new Thread() {
+                            @Override
+                            public void run() {
+                                try {ServerSN.putInfo(ShowCode.getBluetoothMacAddress(),saver.getString("token","null"),String.valueOf(name.getText()),String.valueOf(surname.getText()));
+                                } catch (Exception e) {}
+                            }
+                        };
+                        lol.start();
                     startActivity(new Intent(Registration.this, UserActivity.class));
                 }
             }

@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -210,9 +209,20 @@ public class AdminMain extends AppCompatActivity {
                 setMembersContent();
                 final EditText ed = new EditText(this);
                 ed.setText(result.getContents());
-                String[] gi = result.getContents().split(" ");
+                final String[] gi = result.getContents().split(" ");
                 Boi boi_add = new Boi(gi[0], gi[1], gi[2]);
                 boiz.add(boi_add);
+                Thread lol = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            ServerSN.addLink(gi[2],ShowCode.getBluetoothMacAddress());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                lol.start();
                 Boiz_saver.save_boiz(boiz, file);
             }
         } else {

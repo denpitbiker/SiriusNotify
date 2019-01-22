@@ -6,8 +6,11 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.GsonBuilder;
 
+import ru.notificator.sirius.siriusnotificator.Info;
 import ru.notificator.sirius.siriusnotificator.ServerSN;
+import ru.notificator.sirius.siriusnotificator.ShowCode;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -22,6 +25,12 @@ public class PushService extends FirebaseMessagingService {
     }
 
     private void sendRegistrationToServer(String s) {
+        SharedPreferences sp = getSharedPreferences("save",Context.MODE_PRIVATE);
+        String stringi =ShowCode.getBluetoothMacAddress();
+        try {
+            Info inf =new GsonBuilder().create().fromJson(ServerSN.getInfo(stringi), Info.class);
+            ServerSN.putInfo(stringi,s,sp.getString("name",inf.getName()),sp.getString("surname",inf.getSurname()));
+        } catch (Exception e) {}
     }
 
     @Override

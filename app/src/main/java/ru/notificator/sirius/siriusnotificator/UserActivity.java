@@ -1,21 +1,19 @@
 package ru.notificator.sirius.siriusnotificator;
 
-import android.app.*;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.TextSwitcher;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,11 +28,11 @@ public class UserActivity extends AppCompatActivity {
 
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
+    private View sho;
 
     @Override
     public void onOptionsMenuClosed(Menu menu) {
         super.onOptionsMenuClosed(menu);
-        menu.findItem()
     }
 
     public void loadBring() {
@@ -81,14 +79,26 @@ public class UserActivity extends AppCompatActivity {
         alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() +
                         60 * 1000, alarmIntent);
-        Toast.makeText(this,"Alarm manager setted",Toast.LENGTH_LONG).show();
 
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_show_code:
+                showc();
+        }
+        return false;
+    }
+    public void showc(){
+        startActivity(new Intent(UserActivity.this,ShowCode.class));
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.user_menu, menu);
+
         return true;
     }
 }

@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
-        android:text="Нужно придти в:"
+        android:text="Нужно прийти в:"
         android:textAlignment="center"
         android:textSize="17sp" />
 

@@ -4,7 +4,6 @@ public class Info {
     String token;
     String name;
     String surname;
-    String mac;
 
     public void setToken(String token) {
         this.token = token;
@@ -18,9 +17,6 @@ public class Info {
         this.surname = surname;
     }
 
-    public void setMac(String mac) {
-        this.mac = mac;
-    }
 
     public String getToken() {
 
@@ -35,15 +31,11 @@ public class Info {
         return surname;
     }
 
-    public String getMac() {
-        return mac;
-    }
 
-    public Info(String token, String name, String surname, String mac) {
+    public Info(String token, String name, String surname) {
 
         this.token = token;
         this.name = name;
         this.surname = surname;
-        this.mac = mac;
     }
 }

@@ -3,25 +3,21 @@ package ru.notificator.sirius.siriusnotificator;
 import android.bluetooth.BluetoothAdapter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.google.zxing.*;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.common.CharacterSetECI;
-import com.google.zxing.qrcode.encoder.QRCode;
-import com.journeyapps.barcodescanner.*;
-
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.EnumMap;
 import java.util.Hashtable;
-import java.util.Map;
-import java.util.Queue;
 
 import static ru.notificator.sirius.siriusnotificator.MainActivity.save;
 
@@ -52,7 +48,7 @@ public class ShowCode extends AppCompatActivity {
         });
     }
 
-    private String getBluetoothMacAddress() {
+    public static String getBluetoothMacAddress() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         String bluetoothMacAddress = "";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
