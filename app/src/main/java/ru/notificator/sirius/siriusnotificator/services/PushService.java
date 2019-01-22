@@ -26,10 +26,11 @@ public class PushService extends FirebaseMessagingService {
 
     private void sendRegistrationToServer(String s) {
         SharedPreferences sp = getSharedPreferences("save",Context.MODE_PRIVATE);
+
         String stringi =ShowCode.getBluetoothMacAddress();
         try {
             Info inf =new GsonBuilder().create().fromJson(ServerSN.getInfo(stringi), Info.class);
-            ServerSN.putInfo(stringi,s,sp.getString("name",inf.getName()),sp.getString("surname",inf.getSurname()));
+            ServerSN.putInfo(sp.getString("Mac",""),s,sp.getString("name",inf.getName()),sp.getString("surname",inf.getSurname()));
         } catch (Exception e) {}
     }
 
