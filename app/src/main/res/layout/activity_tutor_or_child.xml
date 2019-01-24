@@ -4,32 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Tutor_or_child">
+    tools:context=".Tutor_or_child"
+    >
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="163dp"
+        android:layout_width="186dp"
         android:layout_height="70dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="50dp"
         android:text="Привет!"
         android:textAlignment="center"
         android:textSize="30dp"
-        android:textStyle="bold"
-        android:layout_marginLeft="100dp" />
+        android:textStyle="bold" />
 
-    <Button
+    <ImageView
         android:id="@+id/rebenok_reg_intro"
-        android:layout_width="181dp"
-        android:layout_height="93dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="130dp"
-        android:text="Я - ребенок" />
+        android:layout_width="151dp"
+        android:layout_height="398dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="120dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:srcCompat="@drawable/boi" />
 
-    <Button
+    <ImageView
         android:id="@+id/kurator_reg_intro"
-        android:layout_width="183dp"
-        android:layout_height="91dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="230dp"
-        android:text="Я - куратор"
-        />
+        android:layout_width="213dp"
+        android:layout_height="630dp"
+        android:layout_marginLeft="160dp"
+        android:scaleX="0.75"
+        android:scaleY="0.75"
+        app:srcCompat="@drawable/kur"
+        android:clickable="true"
+        android:focusable="true"/>
 </FrameLayout>

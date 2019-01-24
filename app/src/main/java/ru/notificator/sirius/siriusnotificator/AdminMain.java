@@ -1,6 +1,8 @@
 package ru.notificator.sirius.siriusnotificator;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,9 +47,6 @@ public class AdminMain extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.admin_asks:
-                    setAsksContent();
-                    return true;
                 case R.id.admin_brings:
                     setBringContent();
                     return true;
@@ -67,16 +66,19 @@ public class AdminMain extends AppCompatActivity {
 
     private RecyclerView prok_uch;
     public static File file;
+    private View clock;
 
     public void setMembersContent() {
         final Activity at = this;
         if (sbor_create_but.getVisibility() == View.VISIBLE) {
             sbor_create_but.setVisibility(View.GONE);
+            clock.setVisibility(View.GONE);
         }
         if (boi_but.getVisibility() != View.VISIBLE) {
             boi_but.setVisibility(View.VISIBLE);
             prok_uch.setVisibility(View.VISIBLE);
         }
+
         boi_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +101,7 @@ public class AdminMain extends AppCompatActivity {
             prok_uch.setVisibility(View.GONE);
         }
         if (sbor_create_but.getVisibility() == View.GONE) {
+            clock.setVisibility(View.VISIBLE);
             sbor_create_but.setVisibility(View.VISIBLE);
         }
         sbor_create_but.setOnClickListener(new View.OnClickListener() {
@@ -170,19 +173,6 @@ public class AdminMain extends AppCompatActivity {
         return res.substring(1);
     }
 
-
-    public void setAsksContent() {
-
-        if (boi_but.getVisibility() == View.VISIBLE) {
-            boi_but.setVisibility(View.GONE);
-            prok_uch.setVisibility(View.GONE);
-        }
-        if (sbor_create_but.getVisibility() != View.GONE) {
-            sbor_create_but.setVisibility(View.GONE);
-        }
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,6 +181,8 @@ public class AdminMain extends AppCompatActivity {
         boi_but = findViewById(R.id.add_boi_button);
         prok_uch = findViewById(R.id.Recycler_View_uch);
         sbor_create_but = findViewById(R.id.add_sbor_but);
+        clock = findViewById(R.id.analog_clockk);
+        sbor_create_but.setVisibility(View.VISIBLE);
         mTextMessage.setText(R.string.title_bring);
         mTextMessage.setText(R.string.title_asks);
         file = new File(getFilesDir(), "save.txt");

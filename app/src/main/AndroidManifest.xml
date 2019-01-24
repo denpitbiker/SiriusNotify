@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="internalOnly"
     package="ru.notificator.sirius.siriusnotificator">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,9 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <receiver android:name="ru.notificator.sirius.siriusnotificator.services.BRVR">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:label="Основа">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,16 +34,19 @@
         </activity>
         <activity
             android:name=".AdminEnter"
+            android:label="Вход куратора"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ShowCode"
+            android:label="Показать код"
             android:screenOrientation="portrait" />
         <activity
             android:name=".AdminMain"
-            android:label="@string/title_activity_admin_main"
+            android:label="Куратор"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Registration"
+            android:label="Регистрация"
             android:screenOrientation="portrait" />
 
         <service android:name=".services.PushService">
@@ -48,6 +58,7 @@
 
         <activity
             android:name=".Tutor_or_child"
+            android:label="Кто ты?"
             android:screenOrientation="portrait" />
         <activity android:name=".UserActivity"></activity>
     </application>
