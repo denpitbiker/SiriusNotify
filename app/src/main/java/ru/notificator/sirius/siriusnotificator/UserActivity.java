@@ -81,24 +81,21 @@ public class UserActivity extends AppCompatActivity {
                         60 * 1000, alarmIntent);
 
     }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.qrc, menu);
+        return true;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
         {
-            case R.id.action_show_code:
+            case R.id.item1:
                 showc();
         }
         return false;
     }
     public void showc(){
         startActivity(new Intent(UserActivity.this,ShowCode.class));
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.user_menu, menu);
-
-        return true;
     }
 }

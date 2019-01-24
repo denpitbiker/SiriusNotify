@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -38,16 +40,23 @@ public class ShowCode extends AppCompatActivity {
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             ((ImageView) findViewById(R.id.qrcode)).setImageBitmap(bitmap);
         } catch (WriterException e) {
-            e.printStackTrace();
+        e.printStackTrace();
         }
-        findViewById(R.id.back_showc).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bacsads, menu);
+        return true;
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.item1:
+                finish();
+        }
+        return false;
+    }
     public static String getBluetoothMacAddress() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         String bluetoothMacAddress = "";
